@@ -9,22 +9,22 @@ import (
 
 //Standard Shinken/Nagios-like Return Code
 const (
-	RC_OK Status = iota
-	RC_WARNING
-	RC_CRITICAL
-	RC_UNKNOWN
+	RcOk Status = iota
+	RcWarning
+	RcCritical
+	RcUnknwon
 )
 
 //Prefix used for the final output
 const (
-	PREFIX_CLI_OK        string = "[OK]"
-	PREFIX_CLI_WARNING   string = "[WARNING]"
-	PREFIX_CLI_CRITICAL  string = "[CRITICAL]"
-	PREFIX_CLI_UNKNOWN   string = "[UNKNOWN]"
-	PREFIX_HTML_OK       string = `<span style="color:white; background-color: #28a745; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">OK</span>`
-	PREFIX_HTML_WARNING  string = `<span style="color:#212529; background-color: #ffc107; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Warning</span>`
-	PREFIX_HTML_CRITICAL string = `<span style="color:white; background-color: #dc3545; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Critical</span>`
-	PREFIX_HTML_UNKNOWN  string = `<span style="color:white; background-color: #6c757d; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Unknown</span>`
+	PrefixCliOk        string = "[OK]"
+	PrefixCliWarning   string = "[WARNING]"
+	PrefixCliCritical  string = "[CRITICAL]"
+	PrefixCliUnknown   string = "[UNKNOWN]"
+	PrefixHTMLOk       string = `<span style="color:white; background-color: #28a745; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">OK</span>`
+	PrefixHTMLWarning  string = `<span style="color:#212529; background-color: #ffc107; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Warning</span>`
+	PrefixHTMLCritical string = `<span style="color:white; background-color: #dc3545; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Critical</span>`
+	PrefixHTMLUnknown  string = `<span style="color:white; background-color: #6c757d; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Unknown</span>`
 )
 
 //Status type used to define the status of the check
@@ -83,7 +83,7 @@ func (o *OutputMode) SetDebug() {
 	Output.classCritical = ""
 }
 
-func formatOutput(str string, class string) string {
+func fmtOutput(str string, class string) string {
 	if Output.mode == "html" {
 		return fmt.Sprintf(`<span style="%v">%v</span>`, class, str)
 	}
@@ -92,17 +92,17 @@ func formatOutput(str string, class string) string {
 
 //FmtOk will format the OK output string depending on the output choosen mode
 func FmtOk(str string) string {
-	return formatOutput(str, Output.classOk)
+	return fmtOutput(str, Output.classOk)
 }
 
 //FmtWarning will format the Warning output string depending on the output choosen mode
 func FmtWarning(str string) string {
-	return formatOutput(str, Output.classWarning)
+	return fmtOutput(str, Output.classWarning)
 }
 
 //FmtCritical will format the Critical output string depending on the output choosen mode
 func FmtCritical(str string) string {
-	return formatOutput(str, Output.classCritical)
+	return fmtOutput(str, Output.classCritical)
 }
 
 //AddShort add a new string to the short output
@@ -135,25 +135,25 @@ func (c *Check) AddLong(long string, bullet bool) {
 //AddOk will add an Ok status to the Check structure
 //to prepare the final output/RC
 func (c *Check) AddOk() {
-	c.rc = append(c.rc, RC_OK)
+	c.rc = append(c.rc, RcOk)
 }
 
 //AddWarning will add an Warning status to the Check structure
 //to prepare the final output/RC
 func (c *Check) AddWarning() {
-	c.rc = append(c.rc, RC_WARNING)
+	c.rc = append(c.rc, RcWarning)
 }
 
 //AddCritical will add an Critical status with some short and long information to the Check structure
 //to prepare the final output/RC
 func (c *Check) AddCritical() {
-	c.rc = append(c.rc, RC_CRITICAL)
+	c.rc = append(c.rc, RcCritical)
 }
 
-//AddUnkown will add an Unknown status with some short and long information to the Check structure
+//AddUnknown will add an Unknown status with some short and long information to the Check structure
 //to prepare the final output/RC
-func (c *Check) AddUnkown() {
-	c.rc = append(c.rc, RC_UNKNOWN)
+func (c *Check) AddUnknown() {
+	c.rc = append(c.rc, RcUnknwon)
 }
 
 //AddPerfData add a new perfdata to the check
@@ -174,7 +174,7 @@ func Ok(short string, long string) {
 	if len(long) > 0 {
 		sLong = append(sLong, long)
 	}
-	check := &Check{[]string{short}, sLong, nil, []Status{RC_OK}}
+	check := &Check{[]string{short}, sLong, nil, []Status{RcOk}}
 	Exit(check)
 }
 
@@ -184,7 +184,7 @@ func Warning(short string, long string) {
 	if len(long) > 0 {
 		sLong = append(sLong, long)
 	}
-	check := &Check{[]string{short}, sLong, nil, []Status{RC_WARNING}}
+	check := &Check{[]string{short}, sLong, nil, []Status{RcWarning}}
 	Exit(check)
 }
 
@@ -194,17 +194,17 @@ func Critical(short string, long string) {
 	if len(long) > 0 {
 		sLong = append(sLong, long)
 	}
-	check := &Check{[]string{short}, sLong, nil, []Status{RC_CRITICAL}}
+	check := &Check{[]string{short}, sLong, nil, []Status{RcCritical}}
 	Exit(check)
 }
 
-//Unknwown will exit the program with the Unknown status
-func Unknwown(short string, long string) {
+//Unknown will exit the program with the Unknown status
+func Unknown(short string, long string) {
 	var sLong []string
 	if len(long) > 0 {
 		sLong = append(sLong, long)
 	}
-	check := &Check{[]string{short}, sLong, nil, []Status{RC_UNKNOWN}}
+	check := &Check{[]string{short}, sLong, nil, []Status{RcUnknwon}}
 	Exit(check)
 }
 
@@ -225,25 +225,25 @@ func Exit(c *Check) {
 	var prefix string
 	if Output.mode == "html" {
 		switch rc {
-		case RC_OK:
-			prefix = PREFIX_HTML_OK
-		case RC_WARNING:
-			prefix = PREFIX_HTML_WARNING
-		case RC_CRITICAL:
-			prefix = PREFIX_HTML_CRITICAL
-		case RC_UNKNOWN:
-			prefix = PREFIX_HTML_UNKNOWN
+		case RcOk:
+			prefix = PrefixHTMLOk
+		case RcWarning:
+			prefix = PrefixHTMLWarning
+		case RcCritical:
+			prefix = PrefixHTMLCritical
+		case RcUnknwon:
+			prefix = PrefixHTMLUnknown
 		}
 	} else {
 		switch rc {
-		case RC_OK:
-			prefix = PREFIX_CLI_OK
-		case RC_WARNING:
-			prefix = PREFIX_CLI_WARNING
-		case RC_CRITICAL:
-			prefix = PREFIX_CLI_CRITICAL
-		case RC_UNKNOWN:
-			prefix = PREFIX_CLI_UNKNOWN
+		case RcOk:
+			prefix = PrefixCliOk
+		case RcWarning:
+			prefix = PrefixCliWarning
+		case RcCritical:
+			prefix = PrefixCliCritical
+		case RcUnknwon:
+			prefix = PrefixCliUnknown
 		}
 	}
 
@@ -259,13 +259,4 @@ func Exit(c *Check) {
 		fmt.Fprintf(os.Stdout, "%v %v%v", prefix, strings.Join(c.short, Output.newLine), perfStr)
 	}
 	os.Exit(int(rc))
-}
-
-func generatePerfOutput(perf []*PerfData) string {
-	var perfsSlice []string
-	for _, p := range perf {
-		perfStr := fmt.Sprintf("%v=%.2f;%v;%v;%v;%v;%v", p.Name, p.Value, p.Unit, p.Warn, p.Crit, p.Min, p.Max)
-		perfsSlice = append(perfsSlice, perfStr)
-	}
-	return strings.Join(perfsSlice, " ")
 }
