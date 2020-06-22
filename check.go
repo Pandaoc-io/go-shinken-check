@@ -1,8 +1,25 @@
 package sknchk
 
+/*
+go-shinken-check
+Copyright © 2020 pandaoc-io <nicolas.bertaina@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 import (
 	"fmt"
-	"math/big"
 	"os"
 	"strings"
 )
@@ -154,18 +171,6 @@ func (c *Check) AddCritical() {
 //to prepare the final output/RC
 func (c *Check) AddUnknown() {
 	c.rc = append(c.rc, RcUnknwon)
-}
-
-//AddPerfData add a new perfdata to the check
-func (c *Check) AddPerfData(name string, value *big.Float, unit string, warn *big.Float, crit *big.Float, min *big.Float, max *big.Float) {
-	c.perfData = append(c.perfData, &PerfData{
-		Name:  name,
-		Value: value,
-		Unit:  unit,
-		Warn:  warn,
-		Crit:  crit,
-		Min:   min,
-		Max:   max})
 }
 
 //Ok will exit the program with the OK status
